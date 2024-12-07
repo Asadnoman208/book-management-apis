@@ -10,13 +10,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const corsOptions = {
-    origin: 'https://7dollars.shop', // Allow only this origin
+app.use(cors({
+    origin: '*', // This allows requests from any origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow these methods
-    credentials: true, // Include credentials (if needed)
-};
-
-app.use(cors(corsOptions));
+}));
 
 connectDB();
 
