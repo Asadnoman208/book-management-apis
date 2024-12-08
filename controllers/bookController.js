@@ -30,7 +30,7 @@ exports.createBook = async (req, res) => {
 
 exports.getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find({ user: req.user });
+    const books = await Book.find();
     return sendResponse(res, STATUS_CODE.OK, true, SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL, books);
   } catch (err) {
     return sendResponse(res, STATUS_CODE.SERVER_ERROR, false, err.message, []);
@@ -40,7 +40,7 @@ exports.getAllBooks = async (req, res) => {
 
 exports.deleteBook = async (req, res) => {
   try {
-    const deletedBook = await Book.findOneAndDelete({ _id: req.params.id, user: req.user });
+    const deletedBook = await Book.findOneAndDelete({ _id: req.params.id });
 
     if (!deletedBook) {
       return sendResponse(res, STATUS_CODE.NOT_FOUND, false, ERRORS.COMMON.NOT_FOUND);
