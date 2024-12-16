@@ -38,6 +38,22 @@ exports.getAllBooks = async (req, res) => {
 };
 
 
+exports.deleteAllBook = async (req, res) => {
+  try {
+    const deletedBook = await Book.findOneAndDelete();
+
+    if (!deletedBook) {
+      return sendResponse(res, STATUS_CODE.NOT_FOUND, false, ERRORS.COMMON.NOT_FOUND);
+    }
+
+    const books = await Book.find();
+
+    return sendResponse(res, STATUS_CODE.OK, true, SUCCESS_MSG.SUCCESS_MESSAGES.DELETE, books);
+  } catch (err) {
+    return sendResponse(res, STATUS_CODE.SERVER_ERROR, false, err.message);
+  }
+};
+
 exports.deleteBook = async (req, res) => {
   try {
     const deletedBook = await Book.findOneAndDelete({ _id: req.params.id });
