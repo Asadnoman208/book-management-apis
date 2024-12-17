@@ -40,19 +40,38 @@ exports.getAllBooks = async (req, res) => {
 
 exports.deleteAllBook = async (req, res) => {
   try {
-    const deletedBook = await Book.findOneAndDelete();
+    // Delete all books
+    const result = await Book.deleteMany({});
 
-    if (!deletedBook) {
-      return sendResponse(res, STATUS_CODE.NOT_FOUND, false, ERRORS.COMMON.NOT_FOUND);
+    if (result.deletedCount === 0) {
+      return sendResponse(
+        res,
+        STATUS_CODE.NOT_FOUND,
+        false,
+        ERRORS.COMMON.NOT_FOUND
+      );
     }
 
+    // Fetch remaining books (should be empty)
     const books = await Book.find();
 
-    return sendResponse(res, STATUS_CODE.OK, true, SUCCESS_MSG.SUCCESS_MESSAGES.DELETE, books);
+    return sendResponse(
+      res,
+      STATUS_CODE.OK,
+      true,
+      SUCCESS_MSG.SUCCESS_MESSAGES.DELETE,
+      books
+    );
   } catch (err) {
-    return sendResponse(res, STATUS_CODE.SERVER_ERROR, false, err.message);
+    return sendResponse(
+      res,
+      STATUS_CODE.SERVER_ERROR,
+      false,
+      err.message
+    );
   }
 };
+
 
 exports.deleteBook = async (req, res) => {
   try {
